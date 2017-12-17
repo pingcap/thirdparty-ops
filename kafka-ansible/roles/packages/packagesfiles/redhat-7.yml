@@ -1,0 +1,15 @@
+packages:
+  - epel-release
+  - java-1.8.0-openjdk-devel
+  - sysstat
+  - lsof
+  - parted
+  - openssh-clients
+  - unzip
+  - curl
+  - wget
+  - iotop
+  - ntpdate
+  - chrony
+  - nmap-ncat
+

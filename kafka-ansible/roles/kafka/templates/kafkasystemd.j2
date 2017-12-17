@@ -1,0 +1,16 @@
+[Unit]
+Description=Kafka{{ id }}
+Before=
+After=syslog.target network.target remote-fs.target nss-lookup.target
+
+[Service]
+LimitNOFILE=1000000
+Type=forking
+User={{ ansible_user }}
+Environment=LOG_DIR={{ kafka_log_dir }}
+ExecStart={{ kafka_java_dir }}/bin/kafka-server-start.sh {{ kafka_java_dir }}/config/server.properties
+Restart=always
+RestartSec=15s
+
+[Install]
+WantedBy=multi-user.target

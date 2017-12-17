@@ -1,0 +1,7 @@
+---
+
+kafka_datalog_dir: "{{ deploy_dir }}/datalog"
+kafka_log_dir: "{{ deploy_dir }}/log"
+kafka_package_dir: "{{ deploy_dir }}/package"
+kafka_link_dir: "{{ deploy_dir }}/kafka"
+kafka_run_dir: "{{ deploy_dir }}/scripts"

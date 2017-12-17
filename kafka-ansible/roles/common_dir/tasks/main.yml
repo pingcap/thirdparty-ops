@@ -1,0 +1,11 @@
+---
+# Common Tasks
+
+- name: create deploy directories
+  file: path={{ item }} state=directory mode=0755
+  with_items:
+    - "{{ backup_dir }}"
+    - "{{ package_dir }}"
+
+
+

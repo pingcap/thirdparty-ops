@@ -1,0 +1,22 @@
+packages:
+  - epel-release
+  - java-1.8.0-openjdk-devel
+  - python-simplejson
+  - python-httplib2
+  - man
+  - man-pages
+  - vim-enhanced
+  - sysstat
+  - lsof
+  - jwhois
+  - nc
+  - libselinux-python
+  - ntp
+  - parted
+  - openssh-clients
+  - iotop
+  - unzip
+  - curl
+  - wget
+  - xfsprogs
+

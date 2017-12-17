@@ -1,0 +1,11 @@
+---
+
+zk_data_dir: "{{ deploy_dir }}/data"
+zk_datalog_dir: "{{ deploy_dir }}/datalog"
+zk_log_dir: "{{ deploy_dir }}/log"
+zk_run_dir: "{{ deploy_dir }}/scripts"
+zk_link_dir: "{{ deploy_dir }}/zk"
+zk_java_env: "{{ zk_link_dir }}/conf/java.env"
+
+zk_maxClientCnxns: "60"
+zk_heap_size: "2G"

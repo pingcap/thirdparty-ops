@@ -1,0 +1,16 @@
+[Unit]
+Description=Zookeeper
+Before=
+After=syslog.target network.target remote-fs.target nss-lookup.target
+
+[Service]
+LimitNOFILE=1000000
+Type=forking
+User={{ ansible_user }}
+Environment=
+ExecStart={{ zk_java_dir }}/bin/zkServer.sh start
+Restart=always
+RestartSec=15s
+
+[Install]
+WantedBy=multi-user.target

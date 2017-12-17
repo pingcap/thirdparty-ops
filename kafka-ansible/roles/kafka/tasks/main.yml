@@ -1,0 +1,35 @@
+---
+# tasks file for zookeeper
+
+- name: create deploy directories
+  file: path={{ item }} state=directory mode=0755
+  with_items:
+  - "{{ kafka_log_dir }}"
+  - "{{ kafka_package_dir }}"
+  - "{{ kafka_datalog_dir }}"
+  - "{{ kafka_run_dir }}"
+# - name: deploy binary
+#   copy: src="{{ resources_dir }}/zookeeper.tar.gz" dest="{{ deploy_dir }}/package" mode=0755 backup=yes
+
+- include_vars: file={{ playbook_dir }}/conf/kafka_packages.yml
+
+- name: extract kafka package
+  unarchive:
+    src: "{{ downloads_dir }}/{{ item.name }}-{{ item.version }}.tar.gz"
+    dest: "{{ package_dir }}"
+    copy: yes
+  with_items: "{{ kafka_packages }}"
+  when: item.name == "kafka"
+
+
+- name: symlink install directory
+  file: src={{ package_dir }}/{{ item.name }}_{{ item.version }} path={{ kafka_link_dir }} state=link
+  with_items: "{{ kafka_packages }}"
+  when: item.name == "kafka"
+
+
+- name: create server.properties file
+  template: src=server.properties.j2 dest={{ kafka_link_dir }}/config/server.properties mode=0644 backup=yes
+
+- name: create run kafka scripts file
+  template: src=run_kafka.sh.j2 dest={{ kafka_run_dir }}/run_kafka.sh mode=0766 backup=yes

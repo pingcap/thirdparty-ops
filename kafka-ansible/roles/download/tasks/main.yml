@@ -1,0 +1,54 @@
+---
+
+- name: create downloads and resources directories
+  file: path="{{ item }}" state=directory mode=0755
+  with_items:
+  - "{{ downloads_dir }}"
+  - "{{ conf_dir }}"
+  tags:
+    - always
+
+
+- name: create kafka_packages.yml
+  template: src=kafka_packages.yml.j2 dest={{ playbook_dir }}/conf/kafka_packages.yml
+
+- include_vars: file={{ playbook_dir }}/conf/kafka_packages.yml
+
+# preflight checks
+- name: detect outbound network
+  shell: >
+    warn=no
+    curl -s --connect-timeout 10 baidu.com 2>/dev/null >/dev/null; echo $?
+  changed_when: false
+  register: outbound_network_st
+  tags:
+    - always
+
+- name: set outbound network fact
+  set_fact: has_outbound_network={{ outbound_network_st.stdout.strip() == '0' }}
+  tags:
+    - always
+
+- name: detect GFW
+  shell: >
+    warn=no
+    curl -s --connect-timeout 10 google.com 2>/dev/null >/dev/null; echo $?
+  changed_when: false
+  register: gfw_st
+
+- name: set GFW fact
+  set_fact: under_gfw={{ gfw_st.stdout.strip() != '0' }}
+
+
+- name: download packages
+  get_url: url={{ item.url }} dest={{ downloads_dir }}/{{ item.name }}-{{ item.version }}.tar.gz validate_certs=no
+  with_items: "{{ kafka_packages }}"
+  when: has_outbound_network and not under_gfw
+
+- name: download packages under gfw
+  get_url: url={{ item.url }} dest={{ downloads_dir }}/{{ item.name }}-{{ item.version }}.tar.gz validate_certs=no
+  with_items: "{{ kafka_under_gfw }}"
+  when: has_outbound_network and under_gfw
+
+
+

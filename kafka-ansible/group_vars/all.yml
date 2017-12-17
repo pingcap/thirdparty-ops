@@ -1,0 +1,23 @@
+---
+# Variables here are applicable to all host groups
+backup_dir: "{{ deploy_dir }}/backup"
+package_dir: "{{ deploy_dir }}/package"
+
+
+# Local
+ansible_log_dir: "{{ playbook_dir }}/log"
+downloads_dir: "{{ playbook_dir }}/downloads"
+resources_dir: "{{ playbook_dir }}/resources"
+conf_dir: "{{ playbook_dir }}/conf"
+# default configuration for multiple host groups and roles
+zk_client_port: 2181
+zk_follower_port: 2888
+zk_election_port: 3888
+
+base_kafka_port: 9090
+
+
+
+
+# Adjust time server
+# time_server: pool.ntp.org
