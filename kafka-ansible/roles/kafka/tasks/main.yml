@@ -9,10 +9,13 @@
   - "{{ kafka_datalog_dir }}"
   - "{{ kafka_run_dir }}"
 
+
+
 - name: create kafka data directory
   file: path={{ item }} state=directory mode=0755
-  with_items: data_drs.split(',')
-  when: data_drs is defined
+  with_items: "{{ data_drs.split(',') }}"
+  when: data_drs is defined and data_drs != ""
+
 # - name: deploy binary
 #   copy: src="{{ resources_dir }}/zookeeper.tar.gz" dest="{{ deploy_dir }}/package" mode=0755 backup=yes
 

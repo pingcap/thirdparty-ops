@@ -60,9 +60,9 @@ socket.request.max.bytes=104857600
 {% set log_dirs = data_drs if data_drs is defined else data_drs -%}
 
 {% if data_drs is defined %}
-    log.dirs={{ data_drs  }}
+log.dirs={{ data_drs  }}
 {% else %}
-    log.dirs={{ kafka_datalog_dir  }}
+log.dirs={{ kafka_datalog_dir  }}
 {% endif %}
 
 # The default number of log partitions per topic. More partitions allow greater
