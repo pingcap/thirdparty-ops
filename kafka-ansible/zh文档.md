@@ -50,7 +50,7 @@
 	- `id` kafka唯一id;非重复
 	- 一行代表一个进程
 	- kafka的默认存储目录为部署目录下`datalog`
-	- 当kafka配置多个存储硬盘时，请配置data_drs；否则留空
+	- 当kafka配置多个存储硬盘时，请配置`data_drs`；否则留空
 	- example: `kafka1 ansible_host=172.17.8.201 deploy_dir=/home/tidb/kafka_deploy1 data_drs=/home/tidb/kafka_deploy1,/tmp/kafka1 kafka_port=9091  id=1`
 	
 ### 准备部署的工作 
