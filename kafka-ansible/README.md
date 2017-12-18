@@ -9,6 +9,7 @@ Default Version
 |Kafka|2.12-1.0.0|
 
 Recommend Hardware
+
 |Name|Cluster Size|Memory|CPU|Disk|
 |:---:|:---:|:---:|:---:|:---:|
 |Zookeeper|3+|16G|8+|2+ 1TB|
