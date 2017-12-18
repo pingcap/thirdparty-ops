@@ -51,8 +51,8 @@ Do it
 	- `id` is the kafka's broker id. It must be set to a unique integer for each broker.
 	- one line mean one process
 	- kakfa's default data log directory is `$deploy_dir/datalog`
-	- more than one directory to stroge kafka's data; please setting `data_drs` or **let it's NULL**
-	- example: `kafka1 ansible_host=172.17.8.201 deploy_dir=/home/tidb/kafka_deploy1 data_drs=/home/tidb/kafka_deploy1,/tmp/kafka1 kafka_port=9091  id=1`
+	- more than one directory to stroge kafka's data; please setting `data_dirs` or **let it's NULL**
+	- example: `kafka1 ansible_host=172.17.8.201 deploy_dir=/home/tidb/kafka_deploy1 data_dirs=/home/tidb/kafka_deploy1,/tmp/kafka1 kafka_port=9091  id=1`
 	
 ### Prepare 
 - Localhost create some deployment directory

@@ -57,10 +57,10 @@ socket.request.max.bytes=104857600
 ############################# Log Basics #############################
 
 # A comma seperated list of directories under which to store log files
-{% set log_dirs = data_drs if data_drs is defined else data_drs -%}
+{% set log_dirs = data_dirs if data_dirs is defined else data_dirs -%}
 
-{% if data_drs is defined %}
-log.dirs={{ data_drs  }}
+{% if data_dirs is defined and data_dirs != "" %}
+log.dirs={{ data_dirs  }}
 {% else %}
 log.dirs={{ kafka_datalog_dir  }}
 {% endif %}
