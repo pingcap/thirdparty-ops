@@ -12,8 +12,8 @@
 
 |名字|数量|内存|CPU|硬盘|
 |:---:|:---:|:---:|:---:|:---:|
-|Zookeeper|3+|16G|8+|2+ 1TB|
-|Kafka|3+|8G|4+|2+ 300G|
+|Kafka|3+|16G|8+|2+ 1TB|
+|Zookeeper|3+|8G|4+|2+ 300G|
 
 上述信息在repo的 `roles/download/templates/kafka_packages.yml.j2`file中
 
