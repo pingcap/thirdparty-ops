@@ -8,6 +8,13 @@ Default Version
 |Zookeeper|3.4.11|
 |Kafka|2.12-1.0.0|
 
+Recommended Hardware
+
+|Name|Cluster Size|Memory|CPU|Disk|
+|:---:|:---:|:---:|:---:|:---:|
+|Kafka|3+|16G|8+|2+ 1TB|
+|Zookeeper|3+|8G|4+|2+ 300G|
+
 Above information in repo file `roles/download/templates/kafka_packages.yml.j2`
 
 Do it
@@ -28,7 +35,7 @@ Do it
 	- deb `apt-get install ansible -y`
 	- rpm `yum install ansible -y`
 - Clone repo
-	- `git clone https://github.com/jomenxiao/kafka-ansible.git`
+	- `git clone https://github.com/pingcap/thirdparty-ops.git`
 - Change directoy
 	- `cd kafka-ansible`
 
@@ -43,7 +50,8 @@ Do it
 	- `kafka_port` for client connect 
 	- `id` is the kafka's broker id. It must be set to a unique integer for each broker.
 	- one line mean one process
-	- example: `kafka1_1 ansible_host=172.17.8.201 deploy_dir=/home/tidb/kafka_deploy1 kafka_port=9091  id=1`
+	- kakfa's default data directory is `$deploy_dir/datalog`;more than one directory to stroge kafka's data, please setting `data_dirs` or **let it's NULL**
+	- example: `kafka1 ansible_host=172.17.8.201 deploy_dir=/home/tidb/kafka_deploy1 data_dirs=/data1/kafka_data,/data2/kafka_data kafka_port=9091  id=1`
 	
 ### Prepare 
 - Localhost create some deployment directory

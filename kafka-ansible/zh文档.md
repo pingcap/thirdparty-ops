@@ -8,6 +8,13 @@
 |Zookeeper|3.4.11|
 |Kafka|2.12-1.0.0|
 
+推荐配置
+
+|名字|数量|内存|CPU|硬盘|
+|:---:|:---:|:---:|:---:|:---:|
+|Kafka|3+|16G|8+|2+ 1TB|
+|Zookeeper|3+|8G|4+|2+ 300G|
+
 上述信息在repo的 `roles/download/templates/kafka_packages.yml.j2`file中
 
 目录
@@ -43,7 +50,8 @@
 	- `kafka_port` 用户连接端口
 	- `id` kafka唯一id;非重复
 	- 一行代表一个进程
-	- example: `kafka1_1 ansible_host=172.17.8.201 deploy_dir=/home/tidb/kafka_deploy1 kafka_port=9091  id=1`
+	- kafka的默认存储目录为部署目录下`$deploy_dir/datalog`；当kafka配置多个存储目录时，请配置`data_dirs`，**否则留空**
+	- example: `kafka1 ansible_host=172.17.8.201 deploy_dir=/home/tidb/kafka_deploy1 data_dirs=/data1/kafka_data,/data2/kafka_data kafka_port=9091  id=1`
 	
 ### 准备部署的工作 
 - 部署机创建部署目录

@@ -8,10 +8,19 @@
   - "{{ kafka_package_dir }}"
   - "{{ kafka_datalog_dir }}"
   - "{{ kafka_run_dir }}"
+
+
+
+- name: create kafka data directory
+  file: path={{ item }} state=directory mode=0755
+  with_items: "{{ data_dirs.split(',') }}"
+  when: data_dirs is defined and data_dirs != ""
+
 # - name: deploy binary
 #   copy: src="{{ resources_dir }}/zookeeper.tar.gz" dest="{{ deploy_dir }}/package" mode=0755 backup=yes
 
 - include_vars: file={{ playbook_dir }}/conf/kafka_packages.yml
+
 
 - name: extract kafka package
   unarchive:
