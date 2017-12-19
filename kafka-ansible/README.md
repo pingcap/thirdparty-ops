@@ -46,7 +46,7 @@ For more information, see [Ansible Documentation](http://docs.ansible.com/ansibl
 
 ## Deploy
 #### Download Kafka-Ansible to the Control Machine
-Use the following command to download Kafka-Ansible. The `kafka-ansible` directory contains all files you need to get started with TiDB-Kafka.
+Use the following command to download Kafka-Ansible. The `kafka-ansible` directory contains all files you need to get started with Kafka-Ansible.
 ```
 git clone https://github.com/pingcap/thirdparty-ops.git
 cd kafka-ansible
