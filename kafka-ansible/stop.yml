@@ -12,19 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This play book is intend for one pass execution
-  - hosts: kafka_servers
-    serial: 1
-    tasks:
-      - name: stop kafka
-        shell: cd {{ deploy_dir }}/scripts && ./run_kafka.sh stop
+# This playbook is intend for one pass execution
 
-        
-  - hosts: zookeeper_servers
-    serial: 1
-    tasks:
-      - name: stop zookeeper
-        shell: cd {{ deploy_dir }}/scripts && ./run_zookeeper.sh stop
+- hosts: kafka_servers
+  serial: 1
+  tasks:
+    - name: stop kafka
+      shell: cd {{ deploy_dir }}/scripts && ./run_kafka.sh stop
 
-
-
+- hosts: zookeeper_servers
+  serial: 1
+  tasks:
+    - name: stop zookeeper
+      shell: cd {{ deploy_dir }}/scripts && ./run_zookeeper.sh stop

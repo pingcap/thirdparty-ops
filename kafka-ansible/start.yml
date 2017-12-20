@@ -12,29 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This play book is intend for one pass execution
+# This playbook is intend for one pass execution
 
-  - hosts: zookeeper_servers
-    tasks:
-      - name: start zookeeper
-        shell: cd {{ deploy_dir }}/scripts && ./run_zookeeper.sh start
+- hosts: zookeeper_servers
+  tasks:
+    - name: start zookeeper
+      shell: cd {{ deploy_dir }}/scripts && ./run_zookeeper.sh start
 
-      - name: wait for start finished
-        shell: cd {{ deploy_dir }}/scripts && ./run_zookeeper.sh status 
-        register: result
-        until: result.stdout.find("follower") != -1 or result.stdout.find("leader") != -1
-        retries: 10
-        delay: 15
+    - name: wait for start finished
+      shell: cd {{ deploy_dir }}/scripts && ./run_zookeeper.sh status 
+      register: result
+      until: result.stdout.find("follower") != -1 or result.stdout.find("leader") != -1
+      retries: 10
+      delay: 15
 
-  - hosts: kafka_servers
-    tasks:
-      - name: wait zookeeper
-        pause:
-            seconds: 6
+- hosts: kafka_servers
+  tasks:
+    - name: wait zookeeper
+      pause:
+          seconds: 6
 
-
-  - hosts: kafka_servers
-    serial: 1
-    tasks:
-      - name: start kafka
-        shell: cd {{ deploy_dir }}/scripts && ./run_kafka.sh start
+- hosts: kafka_servers
+  serial: 1
+  tasks:
+    - name: start kafka
+      shell: cd {{ deploy_dir }}/scripts && ./run_kafka.sh start

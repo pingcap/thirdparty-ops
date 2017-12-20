@@ -12,15 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This play book is intend for one pass execution
-
+# This playbook is intend for one pass execution
 
 - name: deploy zookeeper
   hosts: zookeeper_servers
   any_errors_fatal: true
   roles:
     - zookeeper
-
 
 - name: deploy kafka
   hosts: kafka_servers

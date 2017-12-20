@@ -12,18 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This play book is intend for one pass execution
+# This playbook is intend for one pass execution
 
-
-    
 - name: initializing deployment environment
   hosts: localhost
   gather_facts: false
   roles:
     - check_config_static
     - download
-
-
 
 - name: initializing deployment target
   hosts: all
