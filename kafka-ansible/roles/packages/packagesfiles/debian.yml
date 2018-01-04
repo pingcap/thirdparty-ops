@@ -1,17 +1,5 @@
 packages:
   - default-jdk
-  - python-simplejson
-  - man-db
-  - vim
-  - sysstat
-  - lsof
-  - netcat
-  - ntp
-  - parted
-  - iotop
   - unzip
-  - curl
-  - wget
-  - ifenslave
-  - xfsprogs
+  - tar
 
