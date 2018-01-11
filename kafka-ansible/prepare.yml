@@ -27,4 +27,15 @@
   roles:
     - bootstrap
     - check_config_dynamic
+
+- name: zookeeper servers install packages
+  hosts: zookeeper_servers
+  any_errors_fatal: true
+  roles:
+    - packages
+
+- name: kafka servers install packages
+  hosts: kafka_servers
+  any_errors_fatal: true
+  roles:
     - packages
