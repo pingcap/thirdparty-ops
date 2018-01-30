@@ -9,8 +9,6 @@
   - "{{ kafka_datalog_dir }}"
   - "{{ kafka_run_dir }}"
 
-
-
 - name: create kafka data directory
   file: path={{ item }} state=directory mode=0755
   with_items: "{{ data_dirs.split(',') }}"
@@ -21,7 +19,6 @@
 
 - include_vars: file={{ playbook_dir }}/conf/kafka_packages.yml
 
-
 - name: extract kafka package
   unarchive:
     src: "{{ downloads_dir }}/{{ item.name }}-{{ item.version }}.tar.gz"
@@ -30,12 +27,10 @@
   with_items: "{{ kafka_packages }}"
   when: item.name == "kafka"
 
-
 - name: symlink install directory
   file: src={{ package_dir }}/{{ item.name }}_{{ item.version }} path={{ kafka_link_dir }} state=link
   with_items: "{{ kafka_packages }}"
   when: item.name == "kafka"
-
 
 - name: create server.properties file
   template: src=server.properties.j2 dest={{ kafka_link_dir }}/config/server.properties mode=0644 backup=yes

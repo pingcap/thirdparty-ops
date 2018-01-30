@@ -113,7 +113,7 @@ tools/kafka-console-producer -brokers="172.17.8.201:9092,172.17.8.202:9092,172.1
 ## Common Tasks
 - Stop kafka and zookeeper
 ``` 
-ansible-playbook -i inventory.ini stop.yml`
+ansible-playbook -i inventory.ini stop.yml
 ```
 > The playbook will stop kafka first, then stop zookeeper.
 
