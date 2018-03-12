@@ -46,16 +46,9 @@
 - name: create top deploy dir when under root
   file: path="{{ deploy_dir }}" state=directory mode=0755 owner={{ deploy_user }} group={{ deploy_user }}
 
-- name: create wal_dir deploy dir when under root
-  file: path="{{ wal_dir }}" state=directory mode=0755 owner={{ deploy_user }} group={{ deploy_user }}
-  when: wal_dir is defined
-
-- name: create raftdb_path deploy dir when under root
-  file: path="{{ raftdb_path }}" state=directory mode=0755 owner={{ deploy_user }} group={{ deploy_user }}
-  when: raftdb_path is defined
-
 - name: set timezone to {{ timezone }}
   timezone: name={{ timezone }}
+  when: set_timezone
 
 - name: set hostname if hostname is not distinguishable
   hostname: name=ip-{{ ansible_default_ipv4.address | replace(".","-") }}
@@ -79,12 +72,6 @@
   when: |
     not (enable_firewalld is defined and enable_firewalld) and
     firewalld_running.stdout.strip() == "running"
-
-- name: or to enable firewalld
-  service: name=firewalld enabled=yes state=started
-  when: |
-    enable_firewalld is defined and enable_firewalld and
-    firewalld_running.stdout.strip() != "running"
 
 # modify irqbalance configuration file
 - name: check centos configuration file exists

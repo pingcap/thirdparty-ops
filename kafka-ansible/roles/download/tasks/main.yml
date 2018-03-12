@@ -8,7 +8,6 @@
   tags:
     - always
 
-
 - name: create kafka_packages.yml
   template: src=kafka_packages.yml.j2 dest={{ playbook_dir }}/conf/kafka_packages.yml
 
@@ -39,7 +38,6 @@
 - name: set GFW fact
   set_fact: under_gfw={{ gfw_st.stdout.strip() != '0' }}
 
-
 - name: download packages
   get_url: url={{ item.url }} dest={{ downloads_dir }}/{{ item.name }}-{{ item.version }}.tar.gz validate_certs=no
   with_items: "{{ kafka_packages }}"
@@ -49,6 +47,3 @@
   get_url: url={{ item.url }} dest={{ downloads_dir }}/{{ item.name }}-{{ item.version }}.tar.gz validate_certs=no
   with_items: "{{ kafka_under_gfw }}"
   when: has_outbound_network and under_gfw
-
-
-
