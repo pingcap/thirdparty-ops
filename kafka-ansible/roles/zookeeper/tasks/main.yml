@@ -9,9 +9,6 @@
   - "{{ zk_datalog_dir }}"
   - "{{ zk_run_dir }}"
 
-# - name: deploy binary
-#   copy: src="{{ resources_dir }}/zookeeper.tar.gz" dest="{{ deploy_dir }}/package" mode=0755 backup=yes
-
 - include_vars: file={{ playbook_dir }}/conf/kafka_packages.yml
 
 - name: extract zookeeper package
@@ -22,13 +19,10 @@
   with_items: "{{ kafka_packages }}"
   when: item.name == "zookeeper"
 
-
 - name: symlink install directory
   file: src={{ package_dir }}/{{ item.name }}-{{ item.version }} path={{ zk_link_dir }} state=link
   with_items: "{{ kafka_packages }}"
   when: item.name == "zookeeper"
-
-
 
 - name: create zoo.cfg file
   template: src=zoo.cfg.j2 dest={{ zk_link_dir }}/conf/zoo.cfg mode=0644 backup=yes
