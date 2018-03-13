@@ -1,5 +1,14 @@
 ---
 
+- fail:
+    msg: "Offline deployment only supports CentOS 7 system now."
+  when: ansible_os_family != "RedHat"
+
+- name: Preflight check - Set unzip status
+  shell: rpm -qa | grep -w unzip | wc -l
+  register: unzip_st
+  changed_when: false
+
 - name: Copy jdk rpm from local
   copy:
     src: "{{ downloads_dir }}/{{ jdk_rpm_file }}"
@@ -9,6 +18,7 @@
   copy:
     src: "{{ downloads_dir }}/{{ unzip_rpm_file }}"
     dest: "/tmp/{{ unzip_rpm_file }}"
+  when: unzip_st.stdout|int != 1
 
 - name: Ensure jdk rpm is installed
   yum:
@@ -21,7 +31,7 @@
   yum:
     name: "/tmp/{{ unzip_rpm_file }}"
     state: present
-  when: ansible_os_family == "RedHat"
+  when: ansible_os_family == "RedHat" and unzip_st.stdout|int != 1
   become: true
 
 - name: Remove temporary downloaded files
