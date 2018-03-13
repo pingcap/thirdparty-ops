@@ -76,7 +76,7 @@ kafka3 ansible_host=172.17.8.203 deploy_dir=/home/tidb/kafka_deploy data_dirs=/d
 | kafka_port | Kafka 端口 |
 | data_dirs | Kakfa 数据目录。如果未设置，其值为 `$deploy_dir/datalog`。如果你有多块磁盘和数据目录或希望自定义该目录，可以设置逗号隔开的一个或多个目录。 |
 
-#### 部署  Kafka cluster
+#### 部署  Kafka 集群
 - 连接外网下载 Kafka 和 zookeeper 安装包到中控机 
 
 > 依赖包可查看  `kafka-ansible/roles/packages/packagesfiles` 文件。
@@ -103,7 +103,7 @@ ansible-playbook -i inventory.ini deploy.yml
 ansible-playbook -i inventory.ini start.yml
 ```
 
-#### 测试 Kafka cluster
+#### 测试 Kafka 集群
 进行 `kafka-ansible` 文件夹, 执行以下命令：
 - 启动 consumer
 ```
@@ -127,7 +127,7 @@ cd $deploy_dir/scripts && ./run_zookeeper.sh start|status|stop
 cd $deploy_dir/scripts && ./run_kafka.sh start|stop
 ```
 
-## 扩容 zookeeper/kafka
+## 扩容 zookeeper/kafka 服务
 添加主机及进程信息到 `inventory.ini` 文件, 然后执行以下命令：
 ```
 ansible-playbook -i inventory.ini prepare.yml --diff
