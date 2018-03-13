@@ -1,0 +1,25 @@
+---
+
+- name: copy jdk rpm from local
+  copy:
+    src: "{{ downloads_dir }}/{{ jdk_rpm_file }}"
+    dest: "/tmp/{{ jdk_rpm_file }}"
+
+- name: copy unzip rpm from local
+  copy:
+    src: "{{ downloads_dir }}/{{ unzip_rpm_file }}"
+    dest: "/tmp/{{ unzip_rpm_file }}"
+
+- name: Ensure jdk rpm is installed
+  yum:
+    name: "/tmp/{{ jdk_rpm_file }}"
+    state: present
+  when: ansible_os_family == "RedHat"
+  become: true
+
+- name: Ensure unzip rpm is installed
+  yum:
+    name: "/tmp/{{ unzip_rpm_file }}"
+    state: present
+  when: ansible_os_family == "RedHat"
+  become: true

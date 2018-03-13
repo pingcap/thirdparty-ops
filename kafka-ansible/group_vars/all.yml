@@ -6,7 +6,6 @@ package_dir: "{{ deploy_dir }}/package"
 # Local
 ansible_log_dir: "{{ playbook_dir }}/log"
 downloads_dir: "{{ playbook_dir }}/downloads"
-resources_dir: "{{ playbook_dir }}/resources"
 conf_dir: "{{ playbook_dir }}/conf"
 
 # default configuration for multiple host groups and roles
@@ -16,5 +15,7 @@ zk_election_port: 3888
 
 base_kafka_port: 9090
 
-# Adjust time server
-# time_server: pool.ntp.org
+offline_deployment: False
+
+jdk_rpm_file: "jdk-8u152-linux-x64.rpm"
+unzip_rpm_file: "unzip-6.0-16.el7.x86_64.rpm"
