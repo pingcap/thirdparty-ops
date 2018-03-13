@@ -1,11 +1,11 @@
 ---
 
-- name: copy jdk rpm from local
+- name: Copy jdk rpm from local
   copy:
     src: "{{ downloads_dir }}/{{ jdk_rpm_file }}"
     dest: "/tmp/{{ jdk_rpm_file }}"
 
-- name: copy unzip rpm from local
+- name: Copy unzip rpm from local
   copy:
     src: "{{ downloads_dir }}/{{ unzip_rpm_file }}"
     dest: "/tmp/{{ unzip_rpm_file }}"
@@ -23,3 +23,10 @@
     state: present
   when: ansible_os_family == "RedHat"
   become: true
+
+- name: Remove temporary downloaded files
+  file: path={{ item }} state=absent
+  with_items:
+    - "/tmp/{{ jdk_rpm_file }}"
+    - "/tmp/{{ unzip_rpm_file }}"
+  ignore_errors: true

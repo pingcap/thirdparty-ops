@@ -1,4 +1,5 @@
 ---
+
 # Variables here are applicable to all host groups
 backup_dir: "{{ deploy_dir }}/backup"
 package_dir: "{{ deploy_dir }}/package"
@@ -14,6 +15,9 @@ zk_follower_port: 2888
 zk_election_port: 3888
 
 base_kafka_port: 9090
+
+# Random shifts for retrying failed ops like downloading
+retry_stagger: 5
 
 offline_deployment: False
 

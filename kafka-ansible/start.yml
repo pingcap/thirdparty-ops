@@ -26,6 +26,10 @@
       retries: 10
       delay: 15
 
+    - name: wait for zookeeper up
+      wait_for: |
+        host={{ ansible_host }} port={{ zk_client_port }} state=present
+
 - hosts: kafka_servers
   tasks:
     - name: wait zookeeper
@@ -37,3 +41,7 @@
   tasks:
     - name: start kafka
       shell: cd {{ deploy_dir }}/scripts && ./run_kafka.sh start
+
+    - name: wait for kafka up
+      wait_for: |
+        host={{ ansible_host }} port={{ kafka_port }} state=present
