@@ -1,34 +1,31 @@
 # Ansible playbooks for Kafka and Zookeeper
 
-## Overview
-Ansible is an IT automation tool. It can configure systems, deploy software, and orchestrate more advanced IT tasks such as continuous deployments or zero downtime rolling updates.
+## 概述
+Ansible 是一款自动化运维工具。它可以用来配置系统，部署软件，或者编排高级的 IT 任务，例如滚动更新。
 
-Kafka-Ansible is a Kafka cluster deployment tool based on Ansible playbook. You can use the Kafka-Ansible configuration file to set up the cluster topology. Kafka-Ansible enables you to quickly deploy a new Kafka cluster or scale a Kafka cluster.
+Kafka-Ansible 是基于 Ansible playbook 功能编写的集群部署工具。你可以通过 Kafka-Ansible 配置文件来设置集群拓扑。使用 Kafka-Ansible 可以快速部署一个新的 Kafka 集群或扩容集群。
 
-## Tutorial
-[English](https://github.com/pingcap/thirdparty-ops/blob/master/kafka-ansible/README.md)
-[简体中文](https://github.com/pingcap/thirdparty-ops/blob/master/kafka-ansible/zh_cn.md)
-
-#### Default Version
-|Name|Version|
+#### 默认版本
+|名字|版本|
 |:---:|:---:|
 |Kafka|2.12-1.0.0|
 |Zookeeper|3.4.11|
 
-> Above information in `roles/download/templates/kafka_packages.yml.j2` file.
+> 以上信息可以查看 `roles/download/templates/kafka_packages.yml.j2` 文件。
 
-## Requirements
-#### Recommended Hardware
-|Name|Cluster Size|Memory|CPU|Disk|
+## 需求
+#### 推荐配置
+
+|名字|数量|内存|CPU|硬盘|
 |:---:|:---:|:---:|:---:|:---:|
 |Kafka|3+|16G|8+|2+ 1TB|
 |Zookeeper|3+|8G|4+|2+ 300G|
 
-#### Install Ansible in the Control Machine
+#### 在中控机器上安装 Ansible 及其依赖
 
-Use the following method to install Ansible on the Control Machine of CentOS 7 system. Installation from the EPEL source includes Ansible dependencies automatically (such as Jinja2==2.7.2 MarkupSafe==0.11). After installation, you can view the version using ansible --version.
+请按以下方式在 CentOS 7 系统的中控机上安装 Ansible。 通过 epel 源安装， 会自动安装 Ansible 相关依赖(如 Jinja2==2.7.2 MarkupSafe==0.11)，安装完成后，可通过 ansible --version 查看版本。
 
-> Make sure that the Ansible version is Ansible 2.4 or later, otherwise a compatibility issue occurs.
+> 请务必确认是 Ansible 2.4 及以上版本，否则会有兼容问题。
 
     ```
     # yum install epel-release
@@ -37,18 +34,20 @@ Use the following method to install Ansible on the Control Machine of CentOS 7 s
       ansible 2.4.2.0
     ```
 
-For more information, see [Ansible Documentation](http://docs.ansible.com/ansible/intro_installation.html).
+其他系统可参考 [官方手册](http://docs.ansible.com/ansible/intro_installation.html)安装 Ansible。
 
-## Deploy
-#### Download Kafka-Ansible to the Control Machine
-Use the following command to download Kafka-Ansible.
+## 部署
+#### 下载 Kafka-Ansible 到中控机
+使用以下命令下载 Kafka-Ansible。
+
 ```
 git clone https://github.com/pingcap/thirdparty-ops.git
 cd kafka-ansible
 ```
 
-#### Orchestrate the Kafka cluster
-Edit `kafka-ansible/inventory.ini` file. Assume you have 6 servers, and each kafka server have two disks to keep data. We recommend using multiple drives to get good throughput. 
+#### 编排 Kafka 集群
+编辑 `kafka-ansible/inventory.ini` 文件。假设你有 6 台服务器，每台服务器有两块磁盘用于保存数据。推荐使用多块盘可获取更好的吞吐。
+ 
 ```
 [zookeeper_servers]
 zk1 ansible_host=172.17.8.204  deploy_dir=/home/tidb/zk_deploy  myid=1
@@ -61,81 +60,82 @@ kafka2 ansible_host=172.17.8.202 deploy_dir=/home/tidb/kafka_deploy data_dirs=/d
 kafka3 ansible_host=172.17.8.203 deploy_dir=/home/tidb/kafka_deploy data_dirs=/data1/kafka_data,/data2/kafka_data kafka_port=9092  id=3
 ```
 
-- Zookeeper variables:
+- Zookeeper 变量:
+
+| 变量 | 描述 |
+| ---- | ------- |
+| deploy_dir | zookeeper 部署目录 |
+| myid | [zookeeper myid]((http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_configuration)), 唯一，范围为 1-255 |
+
+- Kafka 变量:
 
 | Variable | Description |
 | ---- | ------- |
-| deploy_dir | zookeeper deployment directory |
-| myid | [zookeeper myid]((http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_configuration)), it must be unique and range 1-255 |
+| deploy_dir | Kafka 部署目录 |
+| id | broker id, 每个 broker 需设置为一个唯一的整数值 |
+| kafka_port | Kafka 端口 |
+| data_dirs | Kakfa 数据目录。如果未设置，其值为 `$deploy_dir/datalog`。如果你有多块磁盘和数据目录或希望自定义该目录，可以设置逗号隔开的一个或多个目录。 |
 
-- Kafka variables:
+#### 部署  Kafka cluster
+- 连接外网下载 Kafka 和 zookeeper 安装包到中控机 
 
-| Variable | Description |
-| ---- | ------- |
-| deploy_dir | Kafka deployment directory |
-| id | id of the broker, it must be set to a unique integer for each broker |
-| kafka_port | Kafka port |
-| data_dirs | Kakfa's data directory. If not set, the value is `$deploy_dir/datalog`. If you have multiple drives and data directories or want to customize, set a comma-separated list of one or more directories. |
-
-#### Deploy the Kafka cluster
-- Connect to the network and download Kafka and zookeeper binary to the Control Machine.
-> Dependent packages: `kafka-ansible/roles/packages/packagesfiles`
+> 依赖包可查看  `kafka-ansible/roles/packages/packagesfiles` 文件。
 
 ```
 ansible-playbook -i inventory.ini local_prepare.yml
 ```
 
-- Initialize remote host's system environment and modify kernel parameters.
+- 初始化系统环境，修改内核参数
 
 ```
 ansible-playbook -i inventory.ini bootstrap.yml
 ```
 
-- Install dependent packages, and deploy zookeeper and kafka.
+- 安装依赖包，部署 zookeeper 和 kafka
 
 ```
 ansible-playbook -i inventory.ini deploy.yml
 ```
 
-- Start zookeeper and kafka
+- 启动 zookeeper 和 kafka 服务
 
 ```
 ansible-playbook -i inventory.ini start.yml
 ```
 
-#### Test the Kafka cluster
-cd `kafka-ansible` directory, and run following commands:
-- Start consumer
+#### 测试 Kafka cluster
+进行 `kafka-ansible` 文件夹, 执行以下命令：
+- 启动 consumer
 ```
 tools/kafka-console-consumer -brokers="172.17.8.201:9092,172.17.8.202:9092,172.17.8.203:9092" -topic=test
 ```
-- Start producer
+- 启动 producer
 ```
 tools/kafka-console-producer -brokers="172.17.8.201:9092,172.17.8.202:9092,172.17.8.203:9092" -topic=test -value=world -key=hello
 ```
 
-## Common Tasks
-- Stop kafka and zookeeper
+## 常见任务
+- 关闭 kafka 和 zookeeper 服务
 ``` 
 ansible-playbook -i inventory.ini stop.yml
 ```
-> The playbook will stop kafka first, then stop zookeeper.
+> playbook 会先关闭 kafka 服务, 然后关闭 zookeeper。
 
-- Manual start/stop zookeeper/kafka
+- 人工启动/关闭 zookeeper/kafka 服务
 ```
 cd $deploy_dir/scripts && ./run_zookeeper.sh start|status|stop
 cd $deploy_dir/scripts && ./run_kafka.sh start|stop
 ```
 
-## Scale zookeeper/kafka
-Add host and process information to `inventory.ini` file, then run following commands.
+## 扩容 zookeeper/kafka
+添加主机及进程信息到 `inventory.ini` 文件, 然后执行以下命令：
 ```
 ansible-playbook -i inventory.ini prepare.yml --diff
 ansible-playbook -i inventory.ini deploy.yml --diff
 ansible-playbook -i inventory.ini start.yml --diff
 ```
 
-## Deployment directory structure
+## 部署目录结构
 #### Zookeeper
 ```
 zk_deploy/
@@ -166,7 +166,7 @@ kafka_deploy/
 │   ├── meta.properties
 │   ├── recovery-point-offset-checkpoint
 │   ├── replication-offset-checkpoint
-│   └── test-1
+│   └── test-1.
 ├── kafka -> /home/tidb/kafka_deploy1/package/kafka_2.12-1.0.0
 ├── log
 │   ├── controller.log
