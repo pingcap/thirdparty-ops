@@ -14,28 +14,9 @@
 
 # This playbook is intend for one pass execution
 
-- name: initializing deployment environment
-  hosts: localhost
-  gather_facts: false
-  roles:
-    - check_config_static
-    - download
-
 - name: initializing deployment target
   hosts: all
   any_errors_fatal: true
   roles:
     - bootstrap
     - check_config_dynamic
-
-- name: zookeeper servers install packages
-  hosts: zookeeper_servers
-  any_errors_fatal: true
-  roles:
-    - packages
-
-- name: kafka servers install packages
-  hosts: kafka_servers
-  any_errors_fatal: true
-  roles:
-    - packages

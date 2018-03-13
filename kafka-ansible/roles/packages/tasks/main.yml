@@ -1,29 +1,7 @@
 ---
-- name: Load OS specific variables
-  include_vars: "{{ item }}"
-  with_first_found:
-    - files:
-        - "{{ ansible_os_family|lower }}-{{ ansible_distribution_major_version }}.yml"
-        - "{{ ansible_os_family|lower }}-{{ ansible_distribution|lower }}.yml"
-        - "{{ ansible_os_family|lower }}.yml"
-        - defaults.yml
-      paths:
-        - ../packagesfiles
 
-- name: Ensure required packages are installed (yum)
-  yum:
-    name: "{{ item }}"
-    update_cache: yes
-    state: present
-  with_items: "{{ packages|default([]) }}"
-  when: ansible_os_family == "RedHat"
-  become: true
+- include_tasks: online.yml
+  when: not offline_deployment|default(false)
 
-- name: Ensure required packages are installed (apt)
-  apt:
-    name: "{{ item }}"
-    update_cache: yes
-    state: present
-  with_items: "{{ packages|default([]) }}"
-  when: ansible_os_family == "Debian"
-  become: true
+- include_tasks: offline.yml
+  when: offline_deployment|default(false)
