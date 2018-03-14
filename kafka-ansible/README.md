@@ -15,7 +15,7 @@ Kafka-Ansible is a Kafka cluster deployment tool based on Ansible playbook. You 
 |Kafka|2.12-1.0.0|
 |Zookeeper|3.4.11|
 
-> Above information in `roles/download/templates/kafka_packages.yml.j2` file.
+> Above information in `kafka-ansible/roles/download/templates/kafka_packages.yml.j2` file.
 
 ## Requirements
 #### Recommended Hardware
@@ -30,12 +30,12 @@ Use the following method to install Ansible on the Control Machine of CentOS 7 s
 
 > Make sure that the Ansible version is Ansible 2.4 or later, otherwise a compatibility issue occurs.
 
-    ```
-    # yum install epel-release
-    # yum install ansible curl
-    # ansible --version
-      ansible 2.4.2.0
-    ```
+  ```bash
+  # yum install epel-release
+  # yum install ansible curl
+  # ansible --version
+    ansible 2.4.2.0
+  ```
 
 For more information, see [Ansible Documentation](http://docs.ansible.com/ansible/intro_installation.html).
 

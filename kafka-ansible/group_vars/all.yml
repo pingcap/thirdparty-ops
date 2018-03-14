@@ -1,4 +1,5 @@
 ---
+
 # Variables here are applicable to all host groups
 backup_dir: "{{ deploy_dir }}/backup"
 package_dir: "{{ deploy_dir }}/package"
@@ -8,14 +9,19 @@ ansible_log_dir: "{{ playbook_dir }}/log"
 downloads_dir: "{{ playbook_dir }}/downloads"
 conf_dir: "{{ playbook_dir }}/conf"
 
-# default configuration for multiple host groups and roles
+# Default configuration for multiple host groups and roles
 zk_client_port: 2181
 zk_follower_port: 2888
 zk_election_port: 3888
 
 base_kafka_port: 9090
 
+# Random shifts for retrying failed ops like downloading
+retry_stagger: 5
+
 offline_deployment: False
 
 jdk_rpm_file: "jdk-8u152-linux-x64.rpm"
+jdk_version: "jdk1.8.0_152"
+
 unzip_rpm_file: "unzip-6.0-16.el7.x86_64.rpm"

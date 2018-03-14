@@ -6,8 +6,5 @@ ulimit -n 1000000
 # WARNING: This file was auto-generated. Do not edit!
 #          All your edit might be overwritten!
 
-
 cd {{ deploy_dir }}/zk/bin
 ZOO_LOG_DIR={{ zk_log_dir }} ./zkServer.sh $1 &
-
-

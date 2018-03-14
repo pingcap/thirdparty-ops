@@ -20,8 +20,16 @@
     - name: stop kafka
       shell: cd {{ deploy_dir }}/scripts && ./run_kafka.sh stop
 
+    - name: wait for kafka down
+      wait_for: |
+        host={{ ansible_host }} port={{ kafka_port }} state=stopped
+
 - hosts: zookeeper_servers
   serial: 1
   tasks:
     - name: stop zookeeper
       shell: cd {{ deploy_dir }}/scripts && ./run_zookeeper.sh stop
+
+    - name: wait for zookeeper down
+      wait_for: |
+        host={{ ansible_host }} port={{ zk_client_port }} state=stopped

@@ -11,7 +11,7 @@ Kafka-Ansible 是基于 Ansible playbook 功能编写的集群部署工具。你
 |Kafka|2.12-1.0.0|
 |Zookeeper|3.4.11|
 
-> 以上信息可以查看 `roles/download/templates/kafka_packages.yml.j2` 文件。
+> 以上信息可以查看 `kafka-ansible/roles/download/templates/kafka_packages.yml.j2` 文件。
 
 ## 需求
 #### 推荐配置
@@ -27,12 +27,12 @@ Kafka-Ansible 是基于 Ansible playbook 功能编写的集群部署工具。你
 
 > 请务必确认是 Ansible 2.4 及以上版本，否则会有兼容问题。
 
-    ```
-    # yum install epel-release
-    # yum install ansible curl
-    # ansible --version
-      ansible 2.4.2.0
-    ```
+  ```bash
+  # yum install epel-release
+  # yum install ansible curl
+  # ansible --version
+    ansible 2.4.2.0
+  ```
 
 其他系统可参考 [官方手册](http://docs.ansible.com/ansible/intro_installation.html)安装 Ansible。
 
