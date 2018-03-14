@@ -39,28 +39,33 @@
     dest: "/usr/java/default"
     src: "/usr/java/{{ jdk_version }}"
     state: link
+  become: true
 
 - name: alternatives link for "java"
   alternatives:
     name: java
     link: /usr/bin/java
     path: "/usr/java/{{ jdk_version }}/jre/bin/java"
+  become: true
 
 - name: alternatives link for "javac"
   alternatives:
     name: javac
     link: /usr/bin/javac
     path: "/usr/java/{{ jdk_version }}/bin/javac"
+  become: true
 
 - name: alternatives link for "jar"
   alternatives:
     name: jar
     link: /usr/bin/jar
     path: "/usr/java/{{ jdk_version }}/bin/jar"
+  become: true
 
 - name: check if "java_sdk" target exists
   stat: path=/usr/lib/jvm/java
   register: filecheck
+  become: true
 
 - name: alternatives link for "java_sdk"
   alternatives:
@@ -68,6 +73,7 @@
     link: /usr/lib/jvm/java
     path: "/usr/java/default"
   when: filecheck and filecheck.stat.exists
+  become: true
 
 - name: Remove temporary downloaded files
   file: path={{ item }} state=absent
