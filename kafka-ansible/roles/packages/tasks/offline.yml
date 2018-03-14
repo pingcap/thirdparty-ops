@@ -34,6 +34,41 @@
   when: ansible_os_family == "RedHat" and unzip_st.stdout|int != 1
   become: true
 
+- name: link "/usr/java/default"
+  file:
+    dest: "/usr/java/default"
+    src: "/usr/java/{{ jdk_version }}"
+    state: link
+
+- name: alternatives link for "java"
+  alternatives:
+    name: java
+    link: /usr/bin/java
+    path: "/usr/java/{{ jdk_version }}/jre/bin/java"
+
+- name: alternatives link for "javac"
+  alternatives:
+    name: javac
+    link: /usr/bin/javac
+    path: "/usr/java/{{ jdk_version }}/bin/javac"
+
+- name: alternatives link for "jar"
+  alternatives:
+    name: jar
+    link: /usr/bin/jar
+    path: "/usr/java/{{ jdk_version }}/bin/jar"
+
+- name: check if "java_sdk" target exists
+  stat: path=/usr/lib/jvm/java
+  register: filecheck
+
+- name: alternatives link for "java_sdk"
+  alternatives:
+    name: java_sdk
+    link: /usr/lib/jvm/java
+    path: "/usr/java/default"
+  when: filecheck and filecheck.stat.exists
+
 - name: Remove temporary downloaded files
   file: path={{ item }} state=absent
   with_items:
