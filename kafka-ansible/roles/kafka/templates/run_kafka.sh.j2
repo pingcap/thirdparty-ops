@@ -102,9 +102,9 @@ if [[ "$1" == "start" ]];then
 elif [[ "$1" == "stop" ]];then
     PID="$(ps auxwww |grep "{{ deploy_dir }}" |grep -i 'kafka\.Kafka' | grep java | grep -v grep | awk '{print $2}')"
     if [ ${PID} -gt 0 ];then
-        kill -9 ${PID}
+        kill ${PID}
     else
-        echo "{{ deploy_dir }} kakfa ont exist"
+        echo "{{ deploy_dir }} kakfa not running"
     fi
 else
     echo "can not know it $1"
