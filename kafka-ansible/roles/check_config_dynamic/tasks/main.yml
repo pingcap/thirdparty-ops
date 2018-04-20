@@ -8,7 +8,6 @@
 
 - name: get facts
   setup:
-  #setup: gather_subset=network
 
 - name: Preflight check - fail when NTP service is not running or ntpstat is not synchronised to NTP server
   shell: ntpstat | grep -w synchronised | wc -l
@@ -16,11 +15,6 @@
   failed_when: ntp_st.stdout|int != 1
   changed_when: false
   when: enable_ntpd
-
-- name: Preflight check - Red Hat Enterprise Linux/CentOS 6 is deprecated
-  debug:
-    msg: "Support for running TiDB on Red Hat Enterprise Linux 6 and CentOS 6 is deprecated, and will be removed in a future release."
-  when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'"
 
 - name: Preflight check - Fail if this machine lacks sufficient RAM.
   fail:
@@ -31,11 +25,6 @@
   set_fact:
     deploy_user: "{{ ansible_user }}"
   when: deploy_user is not defined
-
-- name: Guess deploy_user - use become_user under root
-  set_fact:
-    deploy_user: "{{ ansible_become_user }}"
-  when: deploy_user == 'root' and ansible_become_user is defined and ansible_become_user
 
 - name: Set deploy dir if not presented
   set_fact: deploy_dir="/home/{{ deploy_user }}/deploy"

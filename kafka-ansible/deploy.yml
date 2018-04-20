@@ -16,12 +16,14 @@
 
 - name: zookeeper servers install dependent packages
   hosts: zookeeper_servers
+  gather_facts: true
   any_errors_fatal: true
   roles:
     - packages
 
 - name: kafka servers install dependent packages
   hosts: kafka_servers
+  gather_facts: true
   any_errors_fatal: true
   roles:
     - packages

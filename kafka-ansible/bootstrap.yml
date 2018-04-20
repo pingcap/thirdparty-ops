@@ -16,6 +16,7 @@
 
 - name: initializing deployment target
   hosts: all
+  become: true
   any_errors_fatal: true
   roles:
     - bootstrap

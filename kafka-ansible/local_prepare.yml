@@ -16,7 +16,8 @@
 
 - name: initializing deployment environment
   hosts: localhost
-  gather_facts: false
+  connection: local
+  gather_facts: true
   roles:
     - check_config_static
     - download

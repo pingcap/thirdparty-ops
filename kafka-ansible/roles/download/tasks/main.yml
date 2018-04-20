@@ -1,32 +1,20 @@
 ---
 
-- name: create downloads and resources directories
-  file: path="{{ item }}" state=directory mode=0755
-  with_items:
-  - "{{ downloads_dir }}"
-  - "{{ conf_dir }}"
-  tags:
-    - always
+- name: Stop if ansible version is too low, make sure that the Ansible version is Ansible 2.4.2 or later, otherwise a compatibility issue occurs.
+  assert:
+    that:
+      - ansible_version.full|version_compare('2.4.2', '>=')
+      # - ansible_version.full is version('2.5.0', '>=')
 
-- name: create kafka_packages.yml
-  template: src=kafka_packages.yml.j2 dest={{ playbook_dir }}/conf/kafka_packages.yml
-
-- include_vars: file={{ playbook_dir }}/conf/kafka_packages.yml
-
-# preflight checks
 - name: detect outbound network
   shell: >
     warn=no
     curl -s --connect-timeout 10 www.baidu.com 2>/dev/null >/dev/null; echo $?
   changed_when: false
   register: outbound_network_st
-  tags:
-    - always
 
 - name: set outbound network fact
   set_fact: has_outbound_network={{ outbound_network_st.stdout.strip() == '0' }}
-  tags:
-    - always
 
 - fail:
     msg: "The Control Machine must have access to the Internet in order to download kafka and related packages."
@@ -42,10 +30,24 @@
 - name: set GFW fact
   set_fact: under_gfw={{ gfw_st.stdout.strip() != '0' }}
 
-- name: download packages
-  get_url: url={{ item.url }} dest={{ downloads_dir }}/{{ item.name }}-{{ item.version }}.tar.gz validate_certs=no
-  with_items: "{{ kafka_packages }}"
-  when: has_outbound_network and not under_gfw
+- name: Make sure curl have been installed
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - curl
+  become: true
+
+- name: create downloads and resources directories
+  file: path="{{ item }}" state=directory mode=0755
+  with_items:
+  - "{{ downloads_dir }}"
+  - "{{ conf_dir }}"
+
+- name: create kafka_packages.yml
+  template: src=kafka_packages.yml.j2 dest={{ playbook_dir }}/conf/kafka_packages.yml
+
+- include_vars: file={{ playbook_dir }}/conf/kafka_packages.yml
 
 - name: download packages
   get_url:
@@ -59,7 +61,9 @@
   retries: 4
   delay: "{{ retry_stagger | random + 3 }}"
   with_items: "{{ kafka_packages }}"
-  when: has_outbound_network and not under_gfw
+  when:
+    - has_outbound_network
+    - not under_gfw
 
 - name: download packages under gfw
   get_url:
@@ -73,8 +77,12 @@
   retries: 4
   delay: "{{ retry_stagger | random + 3 }}"
   with_items: "{{ kafka_under_gfw }}"
-  when: has_outbound_network and under_gfw
+  when:
+    - has_outbound_network
+    - under_gfw
 
 - name: download unzip rpm when offline_deployment = True
   get_url: url=http://download.pingcap.org/{{ unzip_rpm_file }} dest={{ downloads_dir }}/{{ unzip_rpm_file }} validate_certs=no
-  when: has_outbound_network and offline_deployment|default(false)
+  when:
+    - has_outbound_network
+    - offline_deployment|default(false)
