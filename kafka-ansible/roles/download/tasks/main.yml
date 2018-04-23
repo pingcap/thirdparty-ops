@@ -30,14 +30,6 @@
 - name: set GFW fact
   set_fact: under_gfw={{ gfw_st.stdout.strip() != '0' }}
 
-- name: Make sure curl have been installed
-  package:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - curl
-  become: true
-
 - name: create downloads and resources directories
   file: path="{{ item }}" state=directory mode=0755
   with_items:

@@ -8,3 +8,7 @@
 - name: Ensure kafka host exists
   fail: msg="One, or no kafka host may be specified."
   when: "groups.get('kafka_servers', [])|length < 1"
+
+- name: Check ansible_user variable
+  fail: msg="ansible_user == 'root' is not supported, please ssh via normal user"
+  when: ansible_user == 'root'
