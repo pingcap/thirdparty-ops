@@ -9,7 +9,7 @@
 - name: get facts
   setup:
 
-- name: Preflight check - fail when NTP service is not running or ntpstat is not synchronised to NTP server
+- name: Preflight check - Make sure NTP service is running and ntpstat is synchronised to NTP server
   shell: ntpstat | grep -w synchronised | wc -l
   register: ntp_st
   failed_when: ntp_st.stdout|int != 1
@@ -26,14 +26,9 @@
     deploy_user: "{{ ansible_user }}"
   when: deploy_user is not defined
 
-- name: Set deploy dir if not presented
+- name: Set deploy_dir if not presented
   set_fact: deploy_dir="/home/{{ deploy_user }}/deploy"
   when: deploy_dir is not defined
-
-- name: Preflight check - Never deploy under root user
-  fail:
-    msg: Never deploy under root user
-  when: deploy_user=='root'
 
 - name: Preflight check - Get umask
   shell: umask
@@ -54,10 +49,6 @@
   fail:
     msg: 'The default max number of file descriptors is too low {{ ulimit.stdout }} should be {{ min_open_fds }}'
   when: ulimit.stdout|int < min_open_fds|int
-
-- name: Set deploy dir if not presented
-  set_fact: deploy_dir="/home/{{ deploy_user }}/deploy"
-  when: deploy_dir is not defined
 
 - name: Determine which mountpoint deploy dir exists on
   shell: "df {{ deploy_dir }} | tail -n1 | awk '{print $NF}'"
