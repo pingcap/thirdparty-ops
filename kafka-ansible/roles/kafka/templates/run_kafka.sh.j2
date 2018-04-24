@@ -12,7 +12,7 @@ chmod +x ./kafka-server-start.sh  kafka-server-stop.sh
 if [[ "$1" == "start" ]];then
     KAFKA_JVM_PERFORMANCE_OPTS="-server -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:+DisableExplicitGC -Djava.awt.headless=true" \
     LOG_DIR={{ kafka_log_dir }} \
-    KAFKA_HEAP_OPTS="-Xmx4G -Xms4G" \
+    KAFKA_HEAP_OPTS="-Xmx{{ kafka_heap_size }} -Xms{{ kafka_heap_size }}" \
     ./kafka-server-start.sh -daemon {{ deploy_dir }}/kafka/config/server.properties \
               --override auto.create.topics.enable=true \
               --override auto.leader.rebalance.enable=true \
