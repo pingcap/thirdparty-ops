@@ -9,10 +9,6 @@
   fail: msg="One, or no kafka host may be specified."
   when: "groups.get('kafka_servers', [])|length < 1"
 
-- name: Close old control master
-  raw: ps aux | grep ansible-ssh | grep -v grep | awk '{print $2}' | xargs kill -9 ; true
-  ignore_errors: true
-  changed_when: false
-  vars:
-    ansible_become: false
-    ansible_connection: local
+- name: Check ansible_user variable
+  fail: msg="ansible_user == 'root' is not supported, please ssh via normal user"
+  when: ansible_user == 'root'

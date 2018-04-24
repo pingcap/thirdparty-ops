@@ -14,6 +14,22 @@
 
 # This playbook is intend for one pass execution
 
+- name: check config locally
+  hosts: localhost
+  any_errors_fatal: true
+  tags:
+    - always
+  roles:
+    - check_config_static
+
+- name: initializing deployment target
+  hosts: all
+  any_errors_fatal: true
+  tags:
+    - always
+  roles:
+    - check_config_dynamic
+
 - hosts: kafka_servers
   serial: 1
   tasks:
