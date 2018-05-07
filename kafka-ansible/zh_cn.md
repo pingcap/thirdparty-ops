@@ -18,8 +18,8 @@ Kafka-Ansible 是基于 Ansible playbook 功能编写的集群部署工具。你
 
 |名字|数量|内存|CPU|硬盘|
 |:---:|:---:|:---:|:---:|:---:|
-|Kafka|3+|16G|8+|2+ 1TB|
-|Zookeeper|3+|8G|4+|2+ 300G|
+|Kafka|3+|32G+|16+|2+ 1TB|
+|Zookeeper|3+|8G+|4+|2+ 300G|
 
 #### 在中控机器上安装 Ansible 及其依赖
 
