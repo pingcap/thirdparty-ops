@@ -21,8 +21,8 @@ Kafka-Ansible is a Kafka cluster deployment tool based on Ansible playbook. You 
 #### Recommended Hardware
 |Name|Cluster Size|Memory|CPU|Disk|
 |:---:|:---:|:---:|:---:|:---:|
-|Kafka|3+|16G|8+|2+ 1TB|
-|Zookeeper|3+|8G|4+|2+ 300G|
+|Kafka|3+|32G+|16+|2+ 1TB|
+|Zookeeper|3+|8G+|4+|2+ 300G|
 
 #### Install Ansible in the Control Machine
 
