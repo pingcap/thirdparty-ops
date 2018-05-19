@@ -20,7 +20,7 @@
 # The id of the broker. This must be set to a unique integer for each broker.
 broker.id={{ id }}
 
-message.max.bytes=2000000000
+message.max.bytes=1073741824
 
 ############################# Socket Server Settings #############################
 
@@ -53,7 +53,7 @@ socket.send.buffer.bytes=102400
 socket.receive.buffer.bytes=102400
 
 # The maximum size of a request that the socket server will accept (protection against OOM)
-socket.request.max.bytes=104857600
+socket.request.max.bytes=1073741824
 
 
 ############################# Log Basics #############################
