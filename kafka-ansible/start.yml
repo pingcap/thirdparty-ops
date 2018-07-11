@@ -38,7 +38,7 @@
     - name: wait for start finished
       shell: cd {{ deploy_dir }}/scripts && ./run_zookeeper.sh status 
       register: result
-      until: result.stdout.find("follower") != -1 or result.stdout.find("leader") != -1
+      until: result.stdout.find("follower") != -1 or result.stdout.find("leader") != -1 or result.stdout.find("standalone") != -1 
       retries: 10
       delay: 15
 
