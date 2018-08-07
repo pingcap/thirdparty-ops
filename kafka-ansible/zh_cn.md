@@ -18,8 +18,10 @@ Kafka-Ansible 是基于 Ansible playbook 功能编写的集群部署工具。你
 
 |名字|数量|内存|CPU|硬盘|
 |:---:|:---:|:---:|:---:|:---:|
-|Kafka|3+|32G+|16+|2+ 1TB|
-|Zookeeper|3+|8G+|4+|2+ 300G|
+|Kafka|3+|32G+|16+|1TB SAS/SSD * 2|
+|Zookeeper|3+|8G+|4+|300G SAS/SSD|
+
+> Kafka：推荐使用多块数据盘，可获取更好的吞吐。
 
 #### 在中控机器上安装 Ansible 及其依赖
 
@@ -46,8 +48,8 @@ cd kafka-ansible
 ```
 
 #### 编排 Kafka 集群
-编辑 `kafka-ansible/inventory.ini` 文件。假设你有 6 台服务器，每台服务器有两块磁盘用于保存数据。推荐使用多块盘可获取更好的吞吐。
- 
+编辑 `kafka-ansible/inventory.ini` 文件。假设你有 6 台服务器，每台服务器有两块磁盘用于保存数据。
+
 ```
 [zookeeper_servers]
 zk1 ansible_host=172.17.8.204  deploy_dir=/home/tidb/zk_deploy  myid=1

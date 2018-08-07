@@ -21,8 +21,10 @@ Kafka-Ansible is a Kafka cluster deployment tool based on Ansible playbook. You 
 #### Recommended Hardware
 |Name|Cluster Size|Memory|CPU|Disk|
 |:---:|:---:|:---:|:---:|:---:|
-|Kafka|3+|32G+|16+|2+ 1TB|
-|Zookeeper|3+|8G+|4+|2+ 300G|
+|Kafka|3+|32G+|16+|1TB SAS/SSD * 2|
+|Zookeeper|3+|8G+|4+|300G SAS/SSD|
+
+> Kafka: We recommend using multiple drives to get good throughput. 
 
 #### Install Ansible in the Control Machine
 
@@ -48,7 +50,8 @@ cd kafka-ansible
 ```
 
 #### Orchestrate the Kafka cluster
-Edit `kafka-ansible/inventory.ini` file. Assume you have 6 servers, and each kafka server have two disks to keep data. We recommend using multiple drives to get good throughput. 
+Edit `kafka-ansible/inventory.ini` file. Assume you have 6 servers, and each kafka server have two disks to keep data. 
+
 ```
 [zookeeper_servers]
 zk1 ansible_host=172.17.8.204  deploy_dir=/home/tidb/zk_deploy  myid=1
