@@ -10,7 +10,13 @@
   - "{{ kafka_run_dir }}"
 
 - name: create kafka data directory
-  file: path={{ item }} state=directory mode=0755
+  file: 
+    path: '{{ item }}' 
+    state: directory 
+    mode: 0755
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
+  become: true
   with_items: "{{ data_dirs.split(',') }}"
   when: data_dirs is defined and data_dirs != ""
 
