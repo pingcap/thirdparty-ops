@@ -25,10 +25,10 @@
     dest: /etc/security/limits.conf
     insertbefore: '# End of file'
     block: |
-      {{ deploy_user }}        soft        nofile        1000000
-      {{ deploy_user }}        hard        nofile        1000000
-      {{ deploy_user }}        soft        core          unlimited
-      {{ deploy_user }}        soft        stack         10240
+      {{ ansible_user }}        soft        nofile        1000000
+      {{ ansible_user }}        hard        nofile        1000000
+      {{ ansible_user }}        soft        core          unlimited
+      {{ ansible_user }}        soft        stack         10240
   when: tuning_kernel_parameters
 
 - name: swap - disable swap
@@ -38,13 +38,14 @@
   changed_when: "swapoff_result.stdout.strip() == 'disable'"
 
 - name: create group
-  group: name={{ deploy_user }}
+  group: name={{ ansible_user }}
 
 - name: create account
-  user: name={{ deploy_user }} group={{ deploy_user }}
+  user: name={{ ansible_user }} group={{ ansible_user }}
 
 - name: create top deploy dir when under root
-  file: path="{{ deploy_dir }}" state=directory mode=0755 owner={{ deploy_user }} group={{ deploy_user }}
+  file: path="{{ deploy_dir }}" state=directory mode=0755 owner={{ ansible_user }} group={{ ansible_user }}
+  become: true
 
 - name: set timezone to {{ timezone }}
   timezone: name={{ timezone }}
