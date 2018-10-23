@@ -9,7 +9,7 @@
   changed_when: false
 
 - name: Set deploy_dir if not presented
-  set_fact: deploy_dir="/home/{{ deploy_user }}/deploy"
+  set_fact: deploy_dir="/home/{{ ansible_user }}/deploy"
   when: deploy_dir is not defined
 
 - include_tasks: root_tasks.yml
