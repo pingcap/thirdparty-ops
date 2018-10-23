@@ -27,7 +27,6 @@
     block: |
       {{ ansible_user }}        soft        nofile        1000000
       {{ ansible_user }}        hard        nofile        1000000
-      {{ ansible_user }}        soft        core          unlimited
       {{ ansible_user }}        soft        stack         10240
   when: tuning_kernel_parameters
 
