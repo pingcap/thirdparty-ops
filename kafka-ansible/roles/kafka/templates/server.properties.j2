@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+{% set replicate_id = groups.kafka_servers | length -%}
 # see kafka.server.KafkaConfig for additional details and defaults
-
 ############################# Server Basics #############################
 
 # The id of the broker. This must be set to a unique integer for each broker.
@@ -24,7 +24,7 @@ message.max.bytes=1073741824
 
 ############################# Socket Server Settings #############################
 
-# The address the socket server listens on. It will get the value returned from 
+# The address the socket server listens on. It will get the value returned from
 # java.net.InetAddress.getCanonicalHostName() if not configured.
 #   FORMAT:
 #     listeners = listener_name://host_name:port
@@ -32,10 +32,14 @@ message.max.bytes=1073741824
 #     listeners = PLAINTEXT://your.host.name:9092
 listeners=PLAINTEXT://{{ ansible_host }}:{{ kafka_port }}
 
-# Hostname and port the broker will advertise to producers and consumers. If not set, 
+# Hostname and port the broker will advertise to producers and consumers. If not set,
 # it uses the value for "listeners" if configured.  Otherwise, it will use the value
 # returned from java.net.InetAddress.getCanonicalHostName().
 #advertised.listeners=PLAINTEXT://your.host.name:9092
+
+{% if replicate_id == 1 %}
+host.name={{ ansible_host }}
+{% endif %}
 
 # Maps listener names to security protocols, the default is for them to be the same. See the config documentation for more details
 #listener.security.protocol.map=PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL
@@ -79,12 +83,22 @@ num.recovery.threads.per.data.dir=1
 ############################# Internal Topic Settings  #############################
 # The replication factor for the group metadata internal topics "__consumer_offsets" and "__transaction_state"
 # For anything other than development testing, a value greater than 1 is recommended for to ensure availability such as 3.
+
+{% if replicate_id == 1 %}
+offsets.topic.replication.factor=1
+transaction.state.log.replication.factor=1
+transaction.state.log.min.isr=1
+
+default.replication.factor=1
+min.insync.replicas=1
+{% else %}
 offsets.topic.replication.factor=3
 transaction.state.log.replication.factor=3
 transaction.state.log.min.isr=2
 
 default.replication.factor=3
 min.insync.replicas=2
+{% endif %}
 
 ############################# Log Flush Policy #############################
 
